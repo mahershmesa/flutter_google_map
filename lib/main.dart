@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'maps',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -45,12 +45,27 @@ class _MyHomePageState extends State<MyHomePage> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+  late List<Marker>allmarker=[];
+
+    @override
+  void initState() {
+    super.initState();
+    allmarker.add(Marker(markerId: MarkerId("my marker"),
+    draggable: false,
+    onTap:(){
+    print("marker tapeed");
+    } ,
+    position: LatLng(37.42796133580664, -122.085749655962)
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
+        markers: Set.from(allmarker),//EXPORT
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
