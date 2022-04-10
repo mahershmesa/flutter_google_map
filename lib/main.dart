@@ -92,6 +92,7 @@ late GoogleMapController _controller;
 List<Marker> allmarker=[];
 
 late PageController _pageController;
+late int prevPage;
 
 @override
 void initState() {
@@ -106,26 +107,36 @@ void initState() {
   ));
 });  
 
-_pageController = PageController(initialPage: 1,viewportFraction: 0.8);
+_pageController = PageController(initialPage: 1,viewportFraction: 0.8)
+..addListener(_onScroll);
 }
+
+  void _onScroll() {
+    if (_pageController.page!.toInt() != prevPage) {
+      prevPage = _pageController.page!.toInt();
+      moveCamera();
+    }
+  }
+
+
 
 _csList(index){
   return AnimatedBuilder(
     animation: _pageController,
-     builder: (BuildContext , Widget ){
-       double value=1;
-       if (_pageController.position.haveDimensions){
-         value = (_pageController.page! - index);
+      builder: (BuildContext context, Widget ){
+        double value=1;
+        if (_pageController.position.haveDimensions){
+        value = (_pageController.page! - index);
          value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
-       }
-       return Center(
+        }
+        return Center(
           child: SizedBox(
             height: Curves.easeInOut.transform(value) * 125.0,
             width: Curves.easeInOut.transform(value) * 350.0,
             child: widget,
           ),
-       );
-     },
+        );
+      },
       child: InkWell(
           onTap: () {
             // moveCamera();
@@ -198,55 +209,52 @@ _csList(index){
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-
-     //);
-}
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Maps"),
-        centerTitle: true,
-      ),
-      body: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height -50.0,
-            child: GoogleMap(
-          initialCameraPosition:CameraPosition(
-            target: LatLng(37.42796133580664, -122.085749655962),
-            zoom: 14.4746,
-          ),
-          markers: Set.from(allMarkers),
-          onMapCreated:MapCreated ,
-            ),
-          ),
-          Positioned(
-            bottom: 20.0,
-            child: Container(
-              height: 200.0,
+        appBar: AppBar(
+          title: Text('Maps'),
+          centerTitle: true,
+        ),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height - 50.0,
               width: MediaQuery.of(context).size.width,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: pharmacys.length,
-                itemBuilder: (BuildContext context,int index){
-                  return _csList(index);
-                },
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(40.7128, -74.0060), zoom: 12.0),
+                markers: Set.from(allmarker),
+                onMapCreated: mapCreated,
               ),
             ),
-          )
-        ],
-      ),
-    );
+            Positioned(
+              bottom: 20.0,
+              child: Container(
+                height: 200.0,
+                width: MediaQuery.of(context).size.width,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: pharmacys.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _csList(index);
+                  },
+                ),
+              ),
+            )
+          ],
+        ));
   }
-  void MapCreated(controller){
+
+  void mapCreated(controller) {
     setState(() {
       _controller = controller;
     });
+  }
+
+  moveCamera() {
+    _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: pharmacys[_pageController.page!.toInt()].locationCoords,
+        zoom: 14.0,
+        bearing: 45.0,
+        tilt: 45.0)));
   }
 }
