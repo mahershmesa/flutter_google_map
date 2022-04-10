@@ -1,7 +1,6 @@
-import 'dart:async';
+//import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_google_map/pharmacy_model.dart';
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  MyHomePage(),
+      home:  const MyHomePage(),
     );
   }
 }
@@ -97,7 +96,7 @@ late int prevPage;
 @override
 void initState() {
   super.initState();
-  pharmacys.forEach((element) {
+  for (var element in pharmacys) {
   allmarker.add(Marker(markerId: MarkerId(element.shName),
   draggable: false,
   infoWindow: InfoWindow(
@@ -105,7 +104,7 @@ void initState() {
   ),
   position: element.locationCoords
   ));
-});  
+}  
 
 _pageController = PageController(initialPage: 1,viewportFraction: 0.8)
 ..addListener(_onScroll);
@@ -123,6 +122,7 @@ _pageController = PageController(initialPage: 1,viewportFraction: 0.8)
 _csList(index){
   return AnimatedBuilder(
     animation: _pageController,
+      // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
       builder: (BuildContext context, Widget ){
         double value=1;
         if (_pageController.position.haveDimensions){
@@ -144,7 +144,7 @@ _csList(index){
           child: Stack(children: [
             Center(
                 child: Container(
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       horizontal: 10.0,
                       vertical: 20.0,
                     ),
@@ -152,7 +152,7 @@ _csList(index){
                     width: 275.0,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black54,
                             offset: Offset(0.0, 4.0),
@@ -168,27 +168,27 @@ _csList(index){
                               height: 90.0,
                               width: 90.0,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(10.0),
                                       topLeft: Radius.circular(10.0)),
                                   image: DecorationImage(
                                       image: NetworkImage(
                                         pharmacys[index].thumbNail),
                                       fit: BoxFit.cover))),
-                          SizedBox(width: 5.0),
+                          const SizedBox(width: 5.0),
                           Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   pharmacys[index].shName,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12.5,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   pharmacys[index].address,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -196,7 +196,7 @@ _csList(index){
                                   width: 170.0,
                                   child: Text(
                                     pharmacys[index].description,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w300),
                                   ),
@@ -211,7 +211,7 @@ _csList(index){
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Maps'),
+          title: const Text('Maps'),
           centerTitle: true,
         ),
         body: Stack(
@@ -220,7 +220,7 @@ _csList(index){
               height: MediaQuery.of(context).size.height - 50.0,
               width: MediaQuery.of(context).size.width,
               child: GoogleMap(
-                initialCameraPosition: CameraPosition(
+                initialCameraPosition: const CameraPosition(
                     target: LatLng(40.7128, -74.0060), zoom: 12.0),
                 markers: Set.from(allmarker),
                 onMapCreated: mapCreated,
