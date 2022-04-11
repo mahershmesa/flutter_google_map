@@ -11,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  //const MyApp({Key? key}) : super(key: key);
 
  // const MyApp({Key? key}) : super(key: key);
 
@@ -90,10 +90,10 @@ late GoogleMapController _controller;
 
 
 
- List<Marker> allmarker=[];
+List<Marker> allmarker=[];
 
 late PageController _pageController;
-late int prevPage;
+  int? prevPage;
 
 @override
 void initState() {
@@ -113,8 +113,8 @@ _pageController = PageController(initialPage: 1,viewportFraction: 0.8)
 }
 
   void _onScroll() {
-    if (_pageController.page!.toInt() != prevPage) {
-      prevPage = _pageController.page!.toInt();
+    if (_pageController.page?.toInt() != prevPage) {
+      prevPage = _pageController.page?.toInt();
       moveCamera();
     }
   }
@@ -125,7 +125,7 @@ _csList(index){
   return AnimatedBuilder(
     animation: _pageController,
       // ignore: avoid_types_as_parameter_names, non_constant_identifier_names
-      builder: (BuildContext context, Widget ){
+      builder: (BuildContext context, Widget? widget ){
         double value=1;
         if (_pageController.position.haveDimensions){
         value = (_pageController.page! - index);
@@ -141,7 +141,7 @@ _csList(index){
       },
       child: InkWell(
           onTap: () {
-            // moveCamera();
+          moveCamera();
           },
           child: Stack(children: [
             Center(
