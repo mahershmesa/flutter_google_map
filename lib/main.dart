@@ -1,17 +1,19 @@
 //import 'dart:async';
-
+import "package:flutter/material.dart";
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_google_map/pharmacy_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+ // const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -88,7 +90,7 @@ late GoogleMapController _controller;
 
 
 
-List<Marker> allmarker=[];
+ List<Marker> allmarker=[];
 
 late PageController _pageController;
 late int prevPage;
@@ -192,7 +194,7 @@ _csList(index){
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.w600),
                                 ),
-                                Container(
+                                SizedBox(
                                   width: 170.0,
                                   child: Text(
                                     pharmacys[index].description,
@@ -216,7 +218,7 @@ _csList(index){
         ),
         body: Stack(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height - 50.0,
               width: MediaQuery.of(context).size.width,
               child: GoogleMap(
@@ -228,7 +230,7 @@ _csList(index){
             ),
             Positioned(
               bottom: 20.0,
-              child: Container(
+              child: SizedBox(
                 height: 200.0,
                 width: MediaQuery.of(context).size.width,
                 child: PageView.builder(

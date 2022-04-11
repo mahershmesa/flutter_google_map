@@ -1,3 +1,3 @@
 model(){
-  
+  int x;
 }
